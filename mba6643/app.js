@@ -62,8 +62,15 @@ function loadImage(pageNum) {
     if (pageNum < 1 || pageNum > TOTAL_PAGES) { resolve(null); return; }
     if (imageCache[pageNum]) { resolve(imageCache[pageNum]); return; }
     const img = new Image();
+    img.crossOrigin = 'anonymous';
     img.onload  = () => { imageCache[pageNum] = img; resolve(img); };
-    img.onerror = () => resolve(null);
+    img.onerror = () => {
+      // Retry without crossOrigin (some servers block credentialed requests)
+      const img2 = new Image();
+      img2.onload  = () => { imageCache[pageNum] = img2; resolve(img2); };
+      img2.onerror = () => resolve(null);
+      img2.src = pageFile(pageNum) + '?t=' + Date.now();
+    };
     img.src = pageFile(pageNum);
   });
 }
@@ -79,17 +86,24 @@ async function init() {
   document.querySelector('.page-jump-sep').textContent = '/ ' + TOTAL_PAGES;
   pageInput.max = TOTAL_PAGES;
 
-  // Load first 4 pages with progress feedback
+  // Show progress while loading first 4 pages, with 5s timeout fallback
   const firstBatch = [1, 2, 3, 4];
   let loaded = 0;
-  await Promise.all(firstBatch.map(n => loadImage(n).then(() => {
-    loaded++;
-    const pct = Math.round((loaded / firstBatch.length) * 100);
-    loadingBar.style.width = pct + '%';
-    loadingPct.textContent = pct + '%';
-  })));
 
-  // Hide loader
+  const loadWithTimeout = (n) => Promise.race([
+    loadImage(n).then(() => {
+      loaded++;
+      const pct = Math.round((loaded / firstBatch.length) * 100);
+      loadingBar.style.width = pct + '%';
+      loadingPct.textContent = pct + '%';
+    }),
+    sleep(5000) // 5s timeout per image — proceed anyway
+  ]);
+
+  await Promise.all(firstBatch.map(loadWithTimeout));
+
+  // Hide loader regardless
+  loadingBar.style.width = '100%';
   loadingScreen.style.opacity = '0';
   loadingScreen.style.transition = 'opacity 0.4s ease';
   await sleep(400);
