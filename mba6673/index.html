@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="img-src * data: blob:; default-src * 'unsafe-inline' 'unsafe-eval';">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MBA6673 – Business Marketing Strategy | SIM Flipbook</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="base.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <svg class="logo-icon" width="32" height="32" viewBox="0 0 32 32" fill="none" aria-label="SIM Logo">
+          <rect width="32" height="32" rx="6" fill="#1a4a8a"/>
+          <rect x="6" y="8" width="14" height="2" rx="1" fill="white"/>
+          <rect x="6" y="13" width="20" height="2" rx="1" fill="white"/>
+          <rect x="6" y="18" width="17" height="2" rx="1" fill="white"/>
+          <rect x="6" y="23" width="11" height="2" rx="1" fill="white"/>
+        </svg>
+        <div class="header-text">
+          <span class="header-course">MBA6673</span>
+          <span class="header-title">Business Marketing Strategy</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <span class="page-indicator" id="pageIndicator">Page 1 of 186</span>
+        <button class="btn-icon" id="downloadBtn" title="Download PDF" aria-label="Download PDF">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        </button>
+        <button class="btn-icon" id="fullscreenBtn" title="Fullscreen" aria-label="Toggle fullscreen">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Flipbook Stage -->
+  <main class="flipbook-stage" id="flipbookStage">
+
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+      <div class="loading-inner">
+        <div class="loading-book">
+          <div class="loading-page loading-page-1"></div>
+          <div class="loading-page loading-page-2"></div>
+          <div class="loading-page loading-page-3"></div>
+        </div>
+        <p class="loading-text">Loading SIM...</p>
+        <div class="loading-bar-track"><div class="loading-bar" id="loadingBar"></div></div>
+        <p class="loading-pct" id="loadingPct">0%</p>
+      </div>
+    </div>
+
+    <!-- Flipbook Container -->
+    <div class="flipbook-container" id="flipbookContainer" style="display:none;">
+
+      <!-- Left nav arrow -->
+      <button class="nav-arrow nav-arrow-left" id="prevBtn" aria-label="Previous page">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+
+      <!-- Book -->
+      <div class="book-wrapper" id="bookWrapper">
+        <div class="book" id="book">
+          <!-- Left page (even page number shown) -->
+          <div class="page page-left" id="pageLeft">
+            <div class="page-content" id="pageLeftContent">
+              <canvas id="canvasLeft"></canvas>
+            </div>
+            <div class="page-shadow-left"></div>
+            <div class="page-number" id="pageNumLeft"></div>
+          </div>
+
+          <!-- Spine -->
+          <div class="book-spine"></div>
+
+          <!-- Right page (odd page number shown) -->
+          <div class="page page-right" id="pageRight">
+            <div class="page-content" id="pageRightContent">
+              <canvas id="canvasRight"></canvas>
+            </div>
+            <div class="page-shadow-right"></div>
+            <div class="page-number" id="pageNumRight"></div>
+          </div>
+
+          <!-- Turning page overlay (for flip animation) -->
+          <div class="turning-page" id="turningPage" style="display:none;">
+            <canvas id="canvasTurning"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right nav arrow -->
+      <button class="nav-arrow nav-arrow-right" id="nextBtn" aria-label="Next page">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+
+    <!-- Mobile single page view -->
+    <div class="mobile-viewer" id="mobileViewer" style="display:none;">
+      <canvas id="canvasMobile"></canvas>
+    </div>
+  </main>
+
+  <!-- Bottom Toolbar -->
+  <footer class="toolbar" id="toolbar" style="display:none;">
+    <div class="toolbar-inner">
+      <button class="toolbar-btn" id="firstBtn" title="First page" aria-label="First page">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 17 6 12 11 7"/><polyline points="18 17 13 12 18 7"/></svg>
+      </button>
+      <button class="toolbar-btn" id="prevBtn2" aria-label="Previous page">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+
+      <div class="page-jump">
+        <input type="number" id="pageInput" min="1" max="186" value="1" aria-label="Go to page" />
+        <span class="page-jump-sep">/ 186</span>
+      </div>
+
+      <button class="toolbar-btn" id="nextBtn2" aria-label="Next page">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+      <button class="toolbar-btn" id="lastBtn" title="Last page" aria-label="Last page">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
+      </button>
+
+      <div class="toolbar-divider"></div>
+
+      <button class="toolbar-btn" id="zoomOutBtn" aria-label="Zoom out">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+      </button>
+      <span class="zoom-label" id="zoomLabel">100%</span>
+      <button class="toolbar-btn" id="zoomInBtn" aria-label="Zoom in">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+      </button>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

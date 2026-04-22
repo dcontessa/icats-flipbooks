@@ -1,5 +1,5 @@
 /* =============================================
-   MBA6643 SIM FLIPBOOK
+   MBA6653 SIM FLIPBOOK
    Chunk-based Base64 loading — works inside any iframe
    No external image requests — Moodle compatible
    ============================================= */
@@ -302,8 +302,8 @@ async function setZoom(level) {
 
 downloadBtn.addEventListener('click', () => {
   const a = document.createElement('a');
-  a.href = './assets/MBA6653-SIM-FIXED.pdf';
-  a.download = 'MBA6653-SIM-FIXED.pdf'; a.target = '_blank';
+  a.href = './assets/MBA6653-SIM-FINAL.pdf';
+  a.download = 'MBA6653-SIM-FINAL.pdf'; a.target = '_blank';
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
 });
 
